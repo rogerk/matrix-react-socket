@@ -4,9 +4,12 @@ import axios from "axios";
 import dotenv from "dotenv";
 import fs from "fs";
 import {
+    ALL_MATRIX,
     INITIAL_MATRIX,
     UPDATE_PIXEL_COLOR,
-    RESET_MATRIX_COLOR
+    PIXEL_COLOR_UPDATE,
+    RESET_MATRIX_COLOR,
+    MATRIX_COLOR_RESET
 } from "./constants/event-types.js";
 
 dotenv.config();
@@ -21,12 +24,12 @@ const http = require("http").Server(app);
 app.use(express.json);
 
 const io = socketIo(http, 
-    { cors: { origin: "http://localhost:3000",  credentials: true}});
+    { cors: { origin: "http://localhost:8080",  credentials: true}});
 
 io.on("connection", socket => {
     console.log("Client Connected");
 
-    socket.on(INITIAL_MATRIX, () => {
+  socket.on(INITIAL_MATRIX, () => {
         getMatrix(socket);
     });
 
@@ -34,9 +37,9 @@ io.on("connection", socket => {
         console.log("Client Disconnected");
     });
 
-    socket.on(UPDATE_PIXEL_COLOR, data => {
-        const pixel = data.pixel;
-        pixel.color = data.color;
+  socket.on(UPDATE_PIXEL_COLOR, data => {
+    const pixel = data.pixel;
+        pixel.pixel.color = data.color;
         updatePixel(socket, pixel);
     });
 
@@ -49,7 +52,7 @@ io.on("connection", socket => {
 const getMatrix = async socket => {
     try {
         const res = await getMatrixData();
-        socket.emit(INITIAL_MATRIX, res.data);
+      socket.emit(ALL_MATRIX, res.data);
     } catch (error) {
         console.error(`Error: ${error}`);
         socket.emit("server_error", "Could not get matrix data", `${error}`);
@@ -57,12 +60,12 @@ const getMatrix = async socket => {
 };
 
 const updatePixel = async (socket, event) => {
-    try {
+  try {
         const res = await axios.put(
-            `http://${dbHost}:${dbPort}/matrix/${event.id}`,
-            event
+            `http://${dbHost}:${dbPort}/matrix/${event.pixel.id}`,
+            event.pixel
         );
-        io.sockets.emit(UPDATE_PIXEL_COLOR, res.data);
+        io.sockets.emit(PIXEL_COLOR_UPDATE, res.data);
     } catch (error) {
         console.error(`Error: ${error}`);
         socket.emit("server_error", "Could not update matrix pixel color");
@@ -77,7 +80,7 @@ const resetMatrix = async (socket, event) => {
             element.color = event;
         });
         fs.writeFileSync(jsonDB, JSON.stringify({ matrix: data }, null, "\t"));
-        io.sockets.emit(RESET_MATRIX_COLOR, data);
+        io.sockets.emit(MATRIX_COLOR_RESET, data);
     } catch (error) {
         console.error(`Error: ${error}`);
         socket.emit(
