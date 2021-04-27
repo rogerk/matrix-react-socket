@@ -74,6 +74,9 @@ const Matrix = () => {
     socket.on('connect_error', (error) => {
       setError("Could not connect to server.");
     });
+    socket.on("connect", () => {
+      setError("");
+    });
     
     return () => {
       if (socket) socket.disconnect();
