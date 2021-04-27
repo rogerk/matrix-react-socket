@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SocketContext, socket } from "./context/socketContext";
 import { ColorContext } from "./context/colorContext";
 import Controls from "./components/controls/controls";

@@ -15,6 +15,7 @@ import {
   MATRIX_COLOR_RESET,
   UPDATE_PIXEL_COLOR,
   PIXEL_COLOR_UPDATE,
+  SERVER_ERROR
 } from "../../constants/event-types";
 
 const Matrix = () => {
@@ -54,7 +55,7 @@ const Matrix = () => {
   });
 
   useEffect(() => {
-    socket.emit(INITIAL_MATRIX);
+    socket.emit(INITIAL_MATRIX, );
     socket.on(ALL_MATRIX, (data) => {
       setPixels(data);
     });
@@ -67,10 +68,13 @@ const Matrix = () => {
       newPixels[idx] = data;
       setPixels(newPixels);
     });
-    socket.on("server_error", (error) => {
+    socket.on(SERVER_ERROR, (error) => {
       setError(error);
     });
-
+    socket.on('connect_error', (error) => {
+      setError("Could not connect to server.");
+    });
+    
     return () => {
       if (socket) socket.disconnect();
     };
