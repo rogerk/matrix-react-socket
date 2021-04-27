@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { SocketContext, socket } from "./context/socketContext";
-import { ColorContext } from "./context/colorContext";
+import { MatrixContext } from "./context/matrixContext";
 import Controls from "./components/controls/controls";
 import Matrix from "./components/matrix/matrix";
 
@@ -11,7 +11,7 @@ const App = () => {
   return (
     <div>
       <SocketContext.Provider value={socket}>
-        <ColorContext.Provider value={{ color, setColor, error, setError }}>
+        <MatrixContext.Provider value={{ color, setColor, error, setError }}>
           <div class="error-message">{error}</div>
           <div className="container">
             <div className="row">
@@ -23,7 +23,7 @@ const App = () => {
               </div>
             </div>
           </div>
-        </ColorContext.Provider>
+        </MatrixContext.Provider>
       </SocketContext.Provider>
     </div>
   );

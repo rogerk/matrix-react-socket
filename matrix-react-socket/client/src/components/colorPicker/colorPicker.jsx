@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from "react";
-import { ColorContext } from "../../context/colorContext";
+import { MatrixContext } from "../../context/matrixContext";
 
 const ColorPicker = ({ handleColorChange }) => {
-  const { color } = useContext(ColorContext);
+  const { color } = useContext(MatrixContext);
 
   return (
     <div>

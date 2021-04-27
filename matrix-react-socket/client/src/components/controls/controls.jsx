@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { ColorContext } from "../../context/colorContext";
+import { MatrixContext } from "../../context/matrixContext";
 import ColorPicker from "../colorPicker/colorPicker";
 import Reset from "../reset/reset";
 import "./controls-styles.scss";
@@ -8,7 +8,7 @@ import { SocketContext } from "../../context/socketContext";
 
 const Controls = () => {
   const socket = useContext(SocketContext);
-  const { color, setColor } = useContext(ColorContext);
+  const { color, setColor } = useContext(MatrixContext);
 
   const handleColorChange = (event) => {
     setColor(event.target.value);

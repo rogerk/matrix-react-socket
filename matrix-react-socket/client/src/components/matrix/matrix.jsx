@@ -6,7 +6,7 @@ import React, {
   useRef,
 } from "react";
 import { SocketContext } from "../../context/socketContext";
-import { ColorContext } from "../../context/colorContext";
+import { MatrixContext } from "../../context/matrixContext";
 import "./matrix-styles.scss";
 import Pixel from "../pixel/pixel";
 import {
@@ -20,7 +20,7 @@ import {
 
 const Matrix = () => {
   const socket = useContext(SocketContext);
-  const { color, error, setError} = useContext(ColorContext);
+  const { color, error, setError} = useContext(MatrixContext);
   const [pixels, setPixels] = useState([]);
   const [rowMarkup, setRowMarkup] = useState([]);
   const prevPixels = useRef();

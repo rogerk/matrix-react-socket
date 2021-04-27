@@ -1,12 +1,12 @@
 import React, { useContext, useCallback, useEffect } from "react";
 import './pixel-styles.scss';
-import { ColorContext } from "../../context/colorContext";
+import { MatrixContext } from "../../context/matrixContext";
 import { socket } from "../../context/socketContext";
 import { UPDATE_PIXEL_COLOR } from "../../constants/event-types";
 
 
 const Pixel = ({ pixel, handlePixelClick }) => {
-  const { color, setColor } = useContext(ColorContext);
+  const { color, setColor } = useContext(MatrixContext);
 
 
   // useEffect(() => {
